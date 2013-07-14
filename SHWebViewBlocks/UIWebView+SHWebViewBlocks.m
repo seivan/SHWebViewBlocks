@@ -1,8 +1,10 @@
 
 #import "UIWebView+SHWebViewBlocks.h"
 
-static NSString * const SH_blockWillShowViewController = @"SH_blockWillShowViewController";
-static NSString * const SH_blockDidShowViewController = @"SH_blockDidShowViewController";
+static NSString * const SH_blockShouldStartLoadingWithRequest = @"SH_blockShouldStartLoadingWithRequest";
+static NSString * const SH_blockDidStartLoad = @"SH_blockDidStartLoad";
+static NSString * const SH_blockDidFinishLoad = @"SH_blockDidFinishLoad";
+static NSString * const SH_blockDidFailLoadWithError = @"SH_blockDidFailLoadWithError";
 
 @protocol SHWebViewDelegate <NSObject>
 @required
@@ -81,13 +83,11 @@ static NSString * const SH_blockDidShowViewController = @"SH_blockDidShowViewCon
   [theWebView setDelegate:[SHWebViewBlockManager sharedManager]];
 }
 
-+(void)setBlock:(id)theBlock
-  forWebView:(UIWebView *)theWebView
-        withKey:(NSString *)theKey; {
++(void)setBlock:(id)theBlock forWebView:(UIWebView *)theWebView withKey:(NSString *)theKey; {
 
   NSAssert(theWebView, @"Must pass theWebView");
   
-  SHNavigationControllerBlock block = [theBlock copy];
+  id block = [theBlock copy];
   
   SHWebViewBlockManager * manager = [SHWebViewBlockManager
                                                   sharedManager];
@@ -108,7 +108,7 @@ static NSString * const SH_blockDidShowViewController = @"SH_blockDidShowViewCon
 #pragma mark -
 #pragma mark Getter
 +(id)blockForWebView:(UIWebView *)theWebView withKey:(NSString *)theKey; {
-  NSAssert(theWebView, @"Must pass a controller to fetch blocks for");
+  NSAssert(theWebView, @"Must pass theWebView to fetch blocks for");
   return [[[SHWebViewBlockManager sharedManager].mapBlocks
           objectForKey:theWebView] objectForKey:theKey];
 }
@@ -120,33 +120,51 @@ static NSString * const SH_blockDidShowViewController = @"SH_blockDidShowViewCon
 #pragma mark -
 #pragma mark <UIWebViewDelegate>
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType; {
-  
+  BOOL shouldStartLoadWithRequest = YES;
+  SHWebViewBlockWithRequest block = [webView SH_blockShouldStartLoadingWithRequest];
+  if(block) shouldStartLoadWithRequest =  block(webView, request, navigationType);
+  return shouldStartLoadWithRequest;
 }
 
 -(void)webViewDidStartLoad:(UIWebView *)webView; {
+  SHWebViewBlock block = [webView SH_blockDidStartLoad];
+  if(block) block(webView);
   
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView; {
+  SHWebViewBlock block = [webView SH_blockDidFinishLoad];
+  if(block) block(webView);
   
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error; {
+  SHWebViewBlockWithError block = [webView SH_blockDidFailLoadWithError];
+  if(block) block(webView, error);
   
 }
 
-//SHNavigationControllerBlock block = [navigationController SH_blockWillShowViewController];
-//if(block) block(navigationController, viewController, animated);
 
 
+@end
+
+@interface UIWebView (Private)
+-(void)SH_setNavigationBlocks;
 @end
 
 @implementation UIWebView  (SHWebViewBlocks)
 
 #pragma mark -
-#pragma mark Setup
+#pragma mark Private
 -(void)SH_setNavigationBlocks; {
   [SHWebViewBlockManager setDelegateForWebView:self];
+}
+
+#pragma mark -
+#pragma mark Helpers
+-(void)SH_loadRequestWithString:(NSString *)theString; {
+  NSAssert(theString, @"Must pass theString");
+  [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:theString]]];
 }
 
 
@@ -156,9 +174,49 @@ static NSString * const SH_blockDidShowViewController = @"SH_blockDidShowViewCon
 #pragma mark -
 #pragma mark Setters
 
+-(void)SH_setShouldStartLoadWithRequestBlock:(SHWebViewBlockWithRequest)theBlock; {
+  [self SH_setNavigationBlocks];
+  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockShouldStartLoadingWithRequest];
+}
+
+-(void)SH_setDidStartLoadBlock:(SHWebViewBlock)theBlock; {
+  [self SH_setNavigationBlocks];
+  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidStartLoad];
+  
+}
+
+-(void)SH_setDidFinishLoadBlock:(SHWebViewBlock)theBlock; {
+  [self SH_setNavigationBlocks];
+  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidFinishLoad];
+  
+}
+
+-(void)SH_setDidFailLoadWithErrorBlock:(SHWebViewBlockWithError)theBlock; {
+  [self SH_setNavigationBlocks];
+  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidFailLoadWithError];
+  
+}
+
 
 
 #pragma mark -
 #pragma mark Getters
+
+-(SHWebViewBlockWithRequest)SH_blockShouldStartLoadingWithRequest; {
+  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockShouldStartLoadingWithRequest];
+}
+
+-(SHWebViewBlock)SH_blockDidStartLoad; {
+  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidStartLoad];
+}
+
+-(SHWebViewBlock)SH_blockDidFinishLoad; {
+  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidFinishLoad];
+}
+
+-(SHWebViewBlockWithError)SH_blockDidFailLoadWithError; {
+  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidFailLoadWithError]; 
+}
+
 
 @end
