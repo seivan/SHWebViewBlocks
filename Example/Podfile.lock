@@ -1,0 +1,14 @@
+PODS:
+  - SHWebViewBlocks (1.0.0)
+
+DEPENDENCIES:
+  - SHWebViewBlocks (from `../`)
+
+EXTERNAL SOURCES:
+  SHWebViewBlocks:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SHWebViewBlocks: 9df07924e17fb5c673fd617108145bb1951ef056
+
+COCOAPODS: 0.22.2
