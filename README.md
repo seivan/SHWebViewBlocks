@@ -1,5 +1,6 @@
 SHWebViewBlocks
 ==========
+[![Build Status](https://travis-ci.org/seivan/SHWebViewBlocks.png?branch=master)](https://travis-ci.org/seivan/SHWebViewBlocks)
 
 Overview
 --------
