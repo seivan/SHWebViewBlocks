@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   source_files   = "#{name}/**/*.{h,m}"
 
   s.version      = version
-  s.summary      = "Blocks for UIWebView - swizzle and libffi free!"
+  s.summary      = "Request Blocks for UIWebView - swizzle and libffi free!"
   s.description  = <<-DESC
 
                     * Swizzle and junk free
