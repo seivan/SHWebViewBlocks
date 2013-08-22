@@ -8,11 +8,14 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "SHWebViewBlocks.h"
+
+
+
 @interface SHWebViewBlocksTests : SenTestCase
 @property(nonatomic,strong) UIWebView * viewWeb;
 @end
 
-
+#import "SHTestCaseAdditions.h"
 
 @implementation SHWebViewBlocksTests
 
@@ -23,6 +26,7 @@
 
 -(void)tearDown; {
   [super tearDown];
+  self.viewWeb = nil;
 }
 
 -(void)testPropertiesAreNil; {
@@ -110,6 +114,57 @@
   });
   
 }
+
+-(void)testSH_loadRequestWithString; {
+  STAssertFalse(self.viewWeb.isLoading, nil);
+  NSString * link = @"www.google.se";
+  [self.viewWeb SH_loadRequestWithString:link];
+  [self SH_runLoopUntilTestPassesWithBlock:^BOOL{
+    return self.viewWeb.isLoading;
+  } withTimeOut:5];
+  STAssertTrue(self.viewWeb.isLoading, nil);
+}
+
+-(void)testSH_setShouldStartLoadWithRequestBlock; {
+  SHWebViewBlockWithRequest block = ^BOOL(UIWebView *theWebView, NSURLRequest *theRequest, UIWebViewNavigationType theNavigationType) {
+    return YES;
+  };
+  
+  [self.viewWeb SH_setShouldStartLoadWithRequestBlock:block];
+  
+  STAssertEqualObjects(block, self.viewWeb.SH_blockShouldStartLoadingWithRequest, nil);
+}
+
+-(void)testSH_setDidStartLoadBlock; {
+  SHWebViewBlock block = ^(UIWebView *theWebView) {
+    
+  };
+  
+  [self.viewWeb SH_setDidStartLoadBlock:block];
+  
+  STAssertEqualObjects(block, self.viewWeb.SH_blockDidStartLoad, nil);
+}
+
+-(void)testSH_setDidFinishLoadBlock; {
+  SHWebViewBlock block = ^(UIWebView *theWebView) {
+    
+  };
+  
+  [self.viewWeb SH_setDidFinishLoadBlock:block];
+  
+  STAssertEqualObjects(block, self.viewWeb.SH_blockDidFinishLoad, nil);
+}
+
+-(void)testSH_setDidFailLoadWithErrorBlock; {
+  SHWebViewBlockWithError block = ^(UIWebView *theWebView, NSError *theError) {
+    
+  };
+  
+  [self.viewWeb SH_setDidFailLoadWithErrorBlock:block];
+  
+  STAssertEqualObjects(block, self.viewWeb.SH_blockDidFailLoadWithError, nil);
+}
+
 
 
 @end

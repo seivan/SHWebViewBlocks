@@ -1,10 +1,14 @@
 
 #import "UIWebView+SHWebViewBlocks.h"
 
-static NSString * const SH_blockShouldStartLoadingWithRequest = @"SH_blockShouldStartLoadingWithRequest";
-static NSString * const SH_blockDidStartLoad = @"SH_blockDidStartLoad";
-static NSString * const SH_blockDidFinishLoad = @"SH_blockDidFinishLoad";
-static NSString * const SH_blockDidFailLoadWithError = @"SH_blockDidFailLoadWithError";
+#define SHStaticConstString(X) static NSString * const X = @#X
+
+SHStaticConstString(SH_blockShouldBeginEditing);
+SHStaticConstString(SH_blockShouldStartLoadingWithRequest);
+SHStaticConstString(SH_blockDidStartLoad);
+SHStaticConstString(SH_blockDidFinishLoad);
+SHStaticConstString(SH_blockDidFailLoadWithError);
+
 
 
 @interface SHWebViewBlockManager : NSObject
@@ -69,8 +73,8 @@ static NSString * const SH_blockDidFailLoadWithError = @"SH_blockDidFailLoadWith
 #pragma mark - Class selectors
 
 +(void)setBlock:(id)theBlock forWebView:(UIWebView *)theWebView withKey:(NSString *)theKey; {
-
-  NSAssert(theWebView, @"Must pass theWebView");
+  NSParameterAssert(theWebView);
+  
   SHWebViewBlockManager * manager = [SHWebViewBlockManager sharedManager];
   theWebView.delegate = manager;
   
@@ -93,9 +97,9 @@ static NSString * const SH_blockDidFailLoadWithError = @"SH_blockDidFailLoadWith
 
 #pragma mark - Getter
 +(id)blockForWebView:(UIWebView *)theWebView withKey:(NSString *)theKey; {
+  NSParameterAssert(theWebView);
   SHWebViewBlockManager * manager = [SHWebViewBlockManager sharedManager];
   theWebView.delegate = manager;
-  NSAssert(theWebView, @"Must pass theWebView to fetch blocks for");
   return [[manager.mapBlocks
           objectForKey:theWebView] objectForKey:theKey];
 }
@@ -140,7 +144,7 @@ static NSString * const SH_blockDidFailLoadWithError = @"SH_blockDidFailLoadWith
 
 #pragma mark - Helpers
 -(void)SH_loadRequestWithString:(NSString *)theString; {
-  NSAssert(theString, @"Must pass theString");
+   NSParameterAssert(theString);
   [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:theString]]];
 }
 

@@ -1,7 +1,9 @@
 PODS:
-  - SHWebViewBlocks (1.0.0)
+  - SHTestCaseAdditions (1.1.0)
+  - SHWebViewBlocks (1.1.0)
 
 DEPENDENCIES:
+  - SHTestCaseAdditions
   - SHWebViewBlocks (from `../`)
 
 EXTERNAL SOURCES:
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SHWebViewBlocks: de98ef259c12588f5566f97389b6895b2257a673
+  SHTestCaseAdditions: 0c64108c62ba04b01cb7d237a4cf6acf1176af45
+  SHWebViewBlocks: 41ed6cfdc3f31124a4a92c52b2603d9bd4e40310
 
-COCOAPODS: 0.22.3
+COCOAPODS: 0.23.0
