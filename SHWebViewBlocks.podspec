@@ -2,8 +2,10 @@ Pod::Spec.new do |s|
   name           = "SHWebViewBlocks"
   url            = "https://github.com/seivan/#{name}"
   git_url        = "#{url}.git"
+
+  version        = "1.2.0"
+
   s.name         = name
-  version        = "1.1.0"
   source_files   = "#{name}/**/*.{h,m}"
 
   s.version      = version
