@@ -6,6 +6,12 @@
 // project.
 
 
+// SHTestCaseAdditions
+#define COCOAPODS_POD_AVAILABLE_SHTestCaseAdditions
+#define COCOAPODS_VERSION_MAJOR_SHTestCaseAdditions 1
+#define COCOAPODS_VERSION_MINOR_SHTestCaseAdditions 1
+#define COCOAPODS_VERSION_PATCH_SHTestCaseAdditions 0
+
 // SHWebViewBlocks
 #define COCOAPODS_POD_AVAILABLE_SHWebViewBlocks
 #define COCOAPODS_VERSION_MAJOR_SHWebViewBlocks 1

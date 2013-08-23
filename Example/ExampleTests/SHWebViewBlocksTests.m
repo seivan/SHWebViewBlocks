@@ -8,11 +8,14 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "SHWebViewBlocks.h"
+
+
+
 @interface SHWebViewBlocksTests : SenTestCase
 @property(nonatomic,strong) UIWebView * viewWeb;
 @end
 
-
+#import "SHTestCaseAdditions.h"
 
 @implementation SHWebViewBlocksTests
 
@@ -23,6 +26,7 @@
 
 -(void)tearDown; {
   [super tearDown];
+  self.viewWeb = nil;
 }
 
 -(void)testPropertiesAreNil; {
@@ -110,6 +114,76 @@
   });
   
 }
+
+-(void)testSH_loadRequestWithString; {
+  STAssertNil(self.viewWeb.request, nil);
+  NSString * link = @"www.google.se";
+  [self.viewWeb SH_loadRequestWithString:link];
+  [self SH_performAsyncTestsWithinBlock:^(BOOL *didFinish) {
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+      STAssertNotNil(self.viewWeb.request, nil);
+      STAssertEqualObjects(self.viewWeb.request, [NSURLRequest requestWithURL:[NSURL URLWithString:link]], nil);
+
+    });
+  } withTimeout:5];
+
+}
+
+//#pragma mark - Helpers
+//-(void)SH_loadRequestWithString:(NSString *)theString; {
+//  NSAssert(theString, @"Must pass theString");
+//  [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:theString]]];
+//}
+//
+//
+//
+//#pragma mark - Properties
+//
+//
+//#pragma mark - Setters
+//
+//-(void)SH_setShouldStartLoadWithRequestBlock:(SHWebViewBlockWithRequest)theBlock; {
+//  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockShouldStartLoadingWithRequest];
+//}
+//
+//-(void)SH_setDidStartLoadBlock:(SHWebViewBlock)theBlock; {
+//  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidStartLoad];
+//  
+//}
+//
+//-(void)SH_setDidFinishLoadBlock:(SHWebViewBlock)theBlock; {
+//  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidFinishLoad];
+//  
+//}
+//
+//-(void)SH_setDidFailLoadWithErrorBlock:(SHWebViewBlockWithError)theBlock; {
+//  [SHWebViewBlockManager setBlock:theBlock forWebView:self withKey:SH_blockDidFailLoadWithError];
+//  
+//}
+//
+//
+//
+//
+//#pragma mark - Getters
+//
+//-(SHWebViewBlockWithRequest)SH_blockShouldStartLoadingWithRequest; {
+//  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockShouldStartLoadingWithRequest];
+//}
+//
+//-(SHWebViewBlock)SH_blockDidStartLoad; {
+//  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidStartLoad];
+//}
+//
+//-(SHWebViewBlock)SH_blockDidFinishLoad; {
+//  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidFinishLoad];
+//}
+//
+//-(SHWebViewBlockWithError)SH_blockDidFailLoadWithError; {
+//  return [SHWebViewBlockManager blockForWebView:self withKey:SH_blockDidFailLoadWithError];
+//}
+
 
 
 @end
