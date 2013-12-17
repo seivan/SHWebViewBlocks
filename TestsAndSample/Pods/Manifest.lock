@@ -1,0 +1,19 @@
+PODS:
+  - SHTestCaseAdditions (1.4.1):
+    - SHTestCaseAdditions/XCTest
+  - SHTestCaseAdditions/XCTest (1.4.1)
+  - SHWebViewBlocks (1.2.0)
+
+DEPENDENCIES:
+  - SHTestCaseAdditions
+  - SHWebViewBlocks (from `../`)
+
+EXTERNAL SOURCES:
+  SHWebViewBlocks:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SHTestCaseAdditions: ff32e10731f37effd08c254e538c3e7998f74921
+  SHWebViewBlocks: 967c535215c44000d321b10d3eb00d0cb5cd17cc
+
+COCOAPODS: 0.28.0

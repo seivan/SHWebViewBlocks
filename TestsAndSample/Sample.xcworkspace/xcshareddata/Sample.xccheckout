@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2B43A64A-B995-4C3F-B33C-AAC4CE05966C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Sample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BFBC96E8-B2EA-447A-B4AD-CE545844C205</key>
+		<string>https://github.com/seivan/SHWebViewBlocks.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TestsAndSample/Sample.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BFBC96E8-B2EA-447A-B4AD-CE545844C205</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/seivan/SHWebViewBlocks.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BFBC96E8-B2EA-447A-B4AD-CE545844C205</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BFBC96E8-B2EA-447A-B4AD-CE545844C205</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SHWebViewBlocks</string>
+		</dict>
+	</array>
+</dict>
+</plist>
