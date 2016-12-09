@@ -1,3 +1,6 @@
+Deprecated, please use [RxCocoa](https://github.com/ReactiveX/RxSwift) 
+
+
 SHWebViewBlocks
 ==========
 [![CI Status](https://img.shields.io/travis/seivan/SHWebViewBlocks.svg?style=flat)](https://travis-ci.org/seivan/SHWebViewBlocks)
